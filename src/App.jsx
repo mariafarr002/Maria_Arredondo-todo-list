@@ -8,6 +8,7 @@ const todoList = [
   { id: 3, title: "run to pharmacy" },
 ]
 
+function App() {
   return (
     <div>
       <h1>My Daily Do's</h1>
