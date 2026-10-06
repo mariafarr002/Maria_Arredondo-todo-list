@@ -1,16 +1,40 @@
-# React + Vite
+# My Daily Do's
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+My Daily Do's is a React application built with Vite. This app demonstrates basic React setup and structure by rendering a simple list of todo items for everyday tasks. The to do list renders three items of daily tasks one might have to complete day to day. 
 
-Currently, two official plugins are available:
+<br>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Installation
+1. Clone the repository:
+```
+git clone http://github.com/mariafarr002/Maria_Arredondo-todo-list.git
+```
+2. Move into a project folder:
+```
+cd Maria_Arredondo-todo-list
+```
+3. Install dependencies:
+```
+npm install
+```
 
-## React Compiler
+<br>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Running the Development Server
 
-## Expanding the ESLint configuration
+Open your terminal and type: 
+```
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Open the local URL shown in the terminal (usually https://localhost:5173/) to view the app
+
+<br>
+
+## About the Project
+This app was created for Lesson-01 of Code the Dream's React 26.4 course. 
+It includes:
+- A cleaned Vite _ React scaffold
+- A custom 'todoList' array
+- Rendering todos inside an unordered list
+- Basic JSX and component structure
