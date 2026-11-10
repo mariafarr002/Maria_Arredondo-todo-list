@@ -1,6 +1,7 @@
 import { useRef } from "react"
 import { useState } from "react"
 import TextInputWithLabel from "../shared/TextInputWithLabel.jsx"
+import { isValidTodoTitle } from "../utils/todoValidation.js"
 
 function TodoForm({ onAddTodo }) {
   const inputRef = useRef()
@@ -26,7 +27,7 @@ function TodoForm({ onAddTodo }) {
         elementId="todoTitle"
         labelText="Todo"
       />
-      <button type="submit" disabled={!workingTodoTitle.trim()}>
+      <button type="submit" disabled={!isValidTodoTitle(workingTodoTitle)}>
         Add Todo
       </button>
     </form>
