@@ -1,5 +1,4 @@
-import { useRef } from "react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import TextInputWithLabel from "../shared/TextInputWithLabel.jsx"
 import { isValidTodoTitle } from "../utils/todoValidation.js"
 
@@ -11,7 +10,7 @@ function TodoForm({ onAddTodo }) {
   const handleAddTodo = (event) => {
     event.preventDefault()
 
-    if (workingTodoTitle.trim()) {
+    if (isValidTodoTitle(workingTodoTitle)) {
       onAddTodo(workingTodoTitle.trim())
       setWorkingTodoTitle("")
       inputRef.current.focus()
