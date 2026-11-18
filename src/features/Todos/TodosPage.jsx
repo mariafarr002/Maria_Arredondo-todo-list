@@ -1,0 +1,46 @@
+import TodoList from "./features/Todos/TodoList/TodoList.jsx"
+import TodoForm from "./features/Todos/TodoForm.jsx"
+import { useState } from "react"
+
+function TodosPage() {
+  const [todoList, setTodoList] = useState([])
+
+  function updateTodo(editedTodo) {
+    const updatedTodos = todoList.map((todo) =>
+      todo.id === editedTodo.id ? { ...editedTodo } : todo,
+    )
+    setTodoList(updatedTodos)
+  }
+
+  function addTodo(todoTitle) {
+    const newTodo = {
+      id: Date.now(),
+      title: todoTitle,
+      isCompleted: false,
+    }
+
+    setTodoList((previous) => [newTodo, ...previous])
+  }
+
+  function completeTodo(id) {
+    setTodoList(
+      todoList.map((todo) => {
+        return todo.id === id ? { ...todo, isCompleted: true } : todo
+      }),
+    )
+  }
+
+  return (
+    <div>
+      <h1>My Daily Do's</h1>
+      <TodoForm onAddTodo={addTodo} />
+      <TodoList
+        todoList={todoList}
+        onCompleteTodo={completeTodo}
+        onUpdateTodo={updateTodo}
+      />
+    </div>
+  )
+}
+
+export default TodosPage
