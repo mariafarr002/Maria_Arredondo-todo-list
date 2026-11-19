@@ -8,6 +8,7 @@ function Logon({ onSetEmail, onSetToken }) {
   async function handleSubmit(event) {
     event.preventDefault()
     setIsLoggingOn(true)
+    setAuthError('')
 
     try {
       const response = await fetch("/api/users/logon", {
@@ -18,12 +19,14 @@ function Logon({ onSetEmail, onSetToken }) {
       })
 
       const data = await response.json()
+
       if (response.status === 200 && data.email && data.csrfToken) {
         onSetEmail(data.email)
         onSetToken(data.csrfToken)
       } else {
         setAuthError(`Authentication failed: ${data?.message}`)
       }
+      
     } catch (error) {
       setAuthError(`Error: ${error.name} | ${error.message}`)
     } finally {
