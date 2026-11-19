@@ -1,4 +1,5 @@
 import { useState } from "react"
+
 function Logon({ onSetEmail, onSetToken }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -8,7 +9,7 @@ function Logon({ onSetEmail, onSetToken }) {
   async function handleSubmit(event) {
     event.preventDefault()
     setIsLoggingOn(true)
-    setAuthError('')
+    setAuthError("")
 
     try {
       const response = await fetch("/api/users/logon", {
@@ -26,7 +27,6 @@ function Logon({ onSetEmail, onSetToken }) {
       } else {
         setAuthError(`Authentication failed: ${data?.message}`)
       }
-      
     } catch (error) {
       setAuthError(`Error: ${error.name} | ${error.message}`)
     } finally {
