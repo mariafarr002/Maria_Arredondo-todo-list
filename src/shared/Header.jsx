@@ -3,7 +3,7 @@
 function Header() {
   return (
     <header>
-      <h1>My Daily Dos</h1>
+      <h1>My Daily Do's</h1>
     </header>
   );
 }

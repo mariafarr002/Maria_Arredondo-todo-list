@@ -1,5 +1,5 @@
-import TodoList from "./features/Todos/TodoList/TodoList.jsx"
-import TodoForm from "./features/Todos/TodoForm.jsx"
+import TodoList from "./TodoList/TodoList.jsx"
+import TodoForm from "./TodoForm.jsx"
 import { useState } from "react"
 
 function TodosPage() {
@@ -32,7 +32,6 @@ function TodosPage() {
 
   return (
     <div>
-      <h1>My Daily Do's</h1>
       <TodoForm onAddTodo={addTodo} />
       <TodoList
         todoList={todoList}
