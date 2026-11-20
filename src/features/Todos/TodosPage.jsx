@@ -1,11 +1,15 @@
 import TodoList from "./TodoList/TodoList.jsx"
 import TodoForm from "./TodoForm.jsx"
 import { useState, useEffect } from "react"
+import SortBy from "../../shared/SortBy.jsx"
 
 function TodosPage({ token }) {
   const [todoList, setTodoList] = useState([])
   const [error, setError] = useState("")
   const [isTodoListLoading, setIsTodoListLoading] = useState(false)
+
+  const [sortBy, setSortBy] = useState("createdAt")
+  const [sortDirection, setSortDirection] = useState("desc")
 
   useEffect(() => {
     async function fetchTodos() {
@@ -13,21 +17,23 @@ function TodosPage({ token }) {
 
       try {
         const params = new URLSearchParams({
+          sortBy,
+          sortDirection,
           limit: 100,
         })
-        const response = await fetch(`/api/tasks?${params}`, {
+        const resp = await fetch(`/api/tasks?${params}`, {
           headers: {
             "X-CSRF-TOKEN": token,
           },
           credentials: "include",
         })
-        if (response.status === 401) {
+        if (resp.status === 401) {
           throw new Error("unauthorized")
         }
-        if (!response.ok) {
-          throw new Error(`Could not load todos (${response.status})`)
+        if (!resp.ok) {
+          throw new Error(`Could not load todos (${resp.status})`)
         }
-        const data = await response.json()
+        const data = await resp.json()
         setTodoList(data.tasks)
       } catch (error) {
         setError(error.message)
@@ -38,7 +44,7 @@ function TodosPage({ token }) {
     if (token) {
       fetchTodos()
     }
-  }, [token])
+  }, [token, sortBy, sortDirection])
 
   async function updateTodo(editedTodo) {
     const originalTodo = todoList.find((todo) => todo.id === editedTodo.id)
@@ -129,6 +135,11 @@ function TodosPage({ token }) {
       )}
       {isTodoListLoading && <p>Loading todos…</p>}
 
+      <SortBy 
+      sortBy={sortBy} 
+      setSortBy={setSortBy} 
+      sortDirection={sortDirection} 
+      setSortDirection={setSortDirection} />
       <TodoForm onAddTodo={addTodo} />
       <TodoList
         todoList={todoList}
