@@ -28,6 +28,8 @@ function TodosPage({ token }) {
     setDataVersion((prev) => prev + 1)
   }, [])
 
+  const [filterError, setFilterError] = useState("")
+
   useEffect(() => {
     async function fetchTodos() {
       setIsTodoListLoading(true)
@@ -57,8 +59,17 @@ function TodosPage({ token }) {
         }
         const data = await resp.json()
         setTodoList(data.tasks)
+        setFilterError("")
       } catch (error) {
-        setError(error.message)
+        if (
+          debouncedFilterTerm ||
+          sortBy !== "createdAt" ||
+          sortDirection !== "desc"
+        ) {
+          setFilterError(`Error filtering/sorting todos: ${error.message}`)
+        } else {
+          setError(`Error fetching todos: ${error.message}`)
+        }
       } finally {
         setIsTodoListLoading(false)
       }
@@ -159,9 +170,30 @@ function TodosPage({ token }) {
       {error && (
         <div className="error-alert">
           <p>{error}</p>
+
           <button onClick={() => setError("")}>Clear Error</button>
         </div>
       )}
+
+      {filterError && (
+        <div>
+          <p>{filterError}</p>
+
+          <button onClick={() => setFilterError("")}>Clear Filter Error</button>
+
+          <button
+            onClick={() => {
+              setFilterTerm("")
+              setSortBy("createdAt")
+              setSortDirection("desc")
+              setFilterError("")
+            }}
+          >
+            Reset Filters
+          </button>
+        </div>
+      )}
+
       {isTodoListLoading && <p>Loading todos…</p>}
 
       <SortBy
