@@ -44,6 +44,7 @@ function Logon({ onSetEmail, onSetToken }) {
         <label htmlFor="email">email</label>
         <input
           id="email"
+          // autoComplete="email"
           value={email}
           required
           onChange={(event) => setEmail(event.target.value)}

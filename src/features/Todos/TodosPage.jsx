@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import SortBy from "../../shared/SortBy.jsx"
 import useDebounce from "../../utils/useDebounce.js"
 import FilterInput from "../../shared/FilterInput.jsx"
+import { useCallback } from "react"
 
 function TodosPage({ token }) {
   const [todoList, setTodoList] = useState([])
@@ -13,10 +14,19 @@ function TodosPage({ token }) {
   const [sortBy, setSortBy] = useState("createdAt")
   const [sortDirection, setSortDirection] = useState("desc")
 
-  const [filterTerm, setFilterTerm] = useState('');
-  const debouncedFilterTerm = useDebounce(filterTerm, 300);
+  const [filterTerm, setFilterTerm] = useState("")
+  const debouncedFilterTerm = useDebounce(filterTerm, 300)
 
-  const handleFilterChange = (newTerm) => { setFilterTerm(newTerm); };
+  const handleFilterChange = (newTerm) => {
+    setFilterTerm(newTerm)
+  }
+
+  const [dataVersion, setDataVersion] = useState(0)
+
+  const invalidateCache = useCallback(() => {
+    console.log("Invalidating memo cache after todo mutation")
+    setDataVersion((prev) => prev + 1)
+  }, [])
 
   useEffect(() => {
     async function fetchTodos() {
@@ -64,6 +74,8 @@ function TodosPage({ token }) {
       previous.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)),
     )
 
+    invalidateCache()
+
     try {
       const response = await fetch(`/api/tasks/${editedTodo.id}`, {
         method: "PATCH",
@@ -104,6 +116,8 @@ function TodosPage({ token }) {
       setTodoList((previous) =>
         previous.map((todo) => (todo.id === newTodo.id ? savedTodo : todo)),
       )
+
+      invalidateCache()
     } catch (error) {
       setTodoList((previous) =>
         previous.filter((todo) => todo.id !== newTodo.id),
@@ -119,6 +133,9 @@ function TodosPage({ token }) {
         todo.id === id ? { ...todo, isCompleted: true } : todo,
       ),
     )
+
+    invalidateCache()
+
     try {
       const response = await fetch(`/api/tasks/${id}`, {
         method: "PATCH",
@@ -147,15 +164,17 @@ function TodosPage({ token }) {
       )}
       {isTodoListLoading && <p>Loading todos…</p>}
 
-      <SortBy 
-      sortBy={sortBy} 
-      setSortBy={setSortBy} 
-      sortDirection={sortDirection} 
-      setSortDirection={setSortDirection} />
+      <SortBy
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+      />
 
-      <FilterInput 
-      filterTerm={filterTerm} 
-      onFilterChange={handleFilterChange} />
+      <FilterInput
+        filterTerm={filterTerm}
+        onFilterChange={handleFilterChange}
+      />
 
       <TodoForm onAddTodo={addTodo} />
 
@@ -163,6 +182,7 @@ function TodosPage({ token }) {
         todoList={todoList}
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
+        dataVersion={dataVersion}
       />
     </div>
   )
