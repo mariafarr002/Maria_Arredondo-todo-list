@@ -11,7 +11,7 @@ function TodoList({ todoList,
 
   return {
     version: dataVersion,
-    todos: todoList.filter((todo) => todo.isCompleted === false),
+    todos: todoList.filter((todo) => !todo.isCompleted),
   };
   }, [todoList, dataVersion]);
 

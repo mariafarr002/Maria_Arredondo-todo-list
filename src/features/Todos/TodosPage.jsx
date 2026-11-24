@@ -85,8 +85,6 @@ function TodosPage({ token }) {
       previous.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)),
     )
 
-    invalidateCache()
-
     try {
       const response = await fetch(`/api/tasks/${editedTodo.id}`, {
         method: "PATCH",
@@ -100,6 +98,9 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error(`Could not update todo (${response.status})`)
       }
+
+    invalidateCache()
+
     } catch (error) {
       setTodoList((previous) =>
         previous.map((todo) =>
@@ -129,6 +130,7 @@ function TodosPage({ token }) {
       )
 
       invalidateCache()
+      
     } catch (error) {
       setTodoList((previous) =>
         previous.filter((todo) => todo.id !== newTodo.id),
@@ -145,8 +147,6 @@ function TodosPage({ token }) {
       ),
     )
 
-    invalidateCache()
-
     try {
       const response = await fetch(`/api/tasks/${id}`, {
         method: "PATCH",
@@ -157,6 +157,9 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error(`Could not complete todo (${response.status})`)
       }
+
+      invalidateCache()
+
     } catch (error) {
       setTodoList((previous) =>
         previous.map((todo) => (todo.id === id ? originalTodo : todo)),
